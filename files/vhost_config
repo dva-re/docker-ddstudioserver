@@ -1,0 +1,30 @@
+<VirtualHost *:80>
+        ServerName test.server
+        ServerAdmin webmaster@localhost
+        
+        DocumentRoot /var/www/html/
+
+        <Directory />
+                Options -Indexes +FollowSymLinks -MultiViews
+                AllowOverride None
+        </Directory>
+
+        <Directory /var/www/html>
+                Options -Indexes +FollowSymLinks -MultiViews
+                AllowOverride All
+                Require all granted
+        </Directory>
+
+        <IfModule mod_setenvif.c>
+                SetEnvIf X-Forwarded-Proto "https" HTTPS=on
+        </IfModule>
+
+        LogLevel warn
+        CustomLog /data/apache_logs/access.log combined
+        ErrorLog /data/apache_logs/error.log
+
+        DirectoryIndex index.htm index.php
+
+        ServerSignature Off
+
+</VirtualHost>

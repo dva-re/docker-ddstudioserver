@@ -1,0 +1,22 @@
+Port 22
+ListenAddress 0.0.0.0
+
+PermitRootLogin without-password
+PubkeyAuthentication yes
+
+AuthorizedKeysFile	/data/.ssh/authorized_keys 
+IgnoreRhosts yes
+
+PasswordAuthentication no
+PermitEmptyPasswords no
+ChallengeResponseAuthentication no
+
+UsePAM no
+
+PrintMotd no
+UseLogin no
+
+
+AcceptEnv LANG LC_*
+
+Subsystem	sftp	/usr/lib/openssh/sftp-server
