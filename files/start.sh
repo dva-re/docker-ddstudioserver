@@ -9,6 +9,9 @@ fi
 chown -R mysql:mysql /var/lib/mysql
 chown -R www-data:www-data /var/www/html
 
+rm -f /var/run/mysqld/mysqld.pid
+rm -f /var/run/mysqld/mysqld.sock.lock
+
 if [ ! -d /data/.ssh ]; then
     mkdir /data/.ssh
     touch /data/.ssh/authorized_keys
