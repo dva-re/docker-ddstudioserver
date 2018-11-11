@@ -4,8 +4,11 @@ MAINTAINER ddstudio
 ADD files/* /root/
 EXPOSE 80 22
 RUN \
- apt-get update && apt-get install -y --no-install-recommends locales openssl ca-certificates openssh-server php php-curl php-apcu php-mbstring php-imagick ghostscript \
- apache2 php-dom php-gd libzip4 php-zip wget lsb-release gnupg git nano sphinxsearch cron && \
+ apt-get update && apt-get install -y --no-install-recommends wget ca-certificates apt-transport-https gnupg && \
+ wget -q https://packages.sury.org/php/apt.gpg -O- | apt-key add - && \
+ echo "deb https://packages.sury.org/php/ stretch main" | tee /etc/apt/sources.list.d/php.list && \ 
+ apt-get update && apt-get install -y --no-install-recommends locales openssl openssh-server php php-curl php-apcu php-mbstring php-imagick ghostscript \
+ apache2 php-xml php-gd libzip4 php-zip lsb-release gnupg git nano sphinxsearch cron && \
  a2enmod rewrite && cat /root/vhost_config > /etc/apache2/sites-available/000-default.conf && rm -f /root/vhost_config &&\
  cd /tmp && wget --no-check-certificate https://dev.mysql.com/get/mysql-apt-config_0.8.8-1_all.deb && export DEBIAN_FRONTEND=noninteractive && \
  echo mysql-apt-config mysql-apt-config/enable-repo select mysql-5.7 | debconf-set-selections && dpkg -i mysql-apt-config_0.8.8-1_all.deb && \
@@ -21,4 +24,3 @@ RUN \
 
 VOLUME ["/data", "/var/www/html", "/etc/sphinxsearch"]
 CMD ["/root/start.sh"]
-
