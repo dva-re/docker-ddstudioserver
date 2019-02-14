@@ -2,7 +2,7 @@ FROM debian:stable-slim
 MAINTAINER ddstudio
 
 ADD files/* /root/
-EXPOSE 80 22
+EXPOSE 80 22 3306
 RUN \
  apt-get update && apt-get install -y --no-install-recommends wget ca-certificates apt-transport-https gnupg && \
  wget -q https://packages.sury.org/php/apt.gpg -O- | apt-key add - && \
@@ -20,6 +20,7 @@ RUN \
  echo '0 * * * * /usr/bin/indexer --rotate --all' | crontab - && \
  echo -e 'LANG="ru_RU.UTF-8"\nLANGUAGE="ru_RU.UTF-8"\n' > /etc/default/locale && sed -i -e 's/# ru_RU.UTF-8 UTF-8/ru_RU.UTF-8 UTF-8/' /etc/locale.gen && \
  dpkg-reconfigure --frontend=noninteractive locales && ln -snf /usr/share/zoneinfo/Europe/Moscow /etc/localtime && echo "Europe/Moscow" > /etc/timezone && \
+ sed -i 's|^bind-address.*|bind-address = 0.0.0.0|' /etc/mysql/mysql.conf.d/mysqld.cnf && \
  chmod +x /root/start.sh
 
 VOLUME ["/data", "/var/www/html", "/etc/sphinxsearch"]
