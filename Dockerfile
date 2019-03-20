@@ -12,7 +12,7 @@ RUN \
  a2enmod rewrite && cat /root/vhost_config > /etc/apache2/sites-available/000-default.conf && rm -f /root/vhost_config &&\
  cd /tmp && wget --no-check-certificate https://dev.mysql.com/get/mysql-apt-config_0.8.8-1_all.deb && export DEBIAN_FRONTEND=noninteractive && \
  echo mysql-apt-config mysql-apt-config/enable-repo select mysql-5.7 | debconf-set-selections && dpkg -i mysql-apt-config_0.8.8-1_all.deb && \
- apt-get update && apt-get install -y --no-install-recommends mysql-server php-mysql && rm -f mysql-apt-config_0.8.8-1_all.deb && \
+ apt-get update && apt-get install -y --allow-unauthenticated --no-install-recommends mysql-server php-mysql && rm -f mysql-apt-config_0.8.8-1_all.deb && \
  cat /root/sshd_config > /etc/ssh/sshd_config && rm -f /root/sshd_config && \
  rm -rf /var/www/html/* && apt-get clean -y && apt-get autoclean -y && apt-get autoremove -y && \
  rm -rf /var/cache/debconf/*-old && rm -rf /var/lib/apt/lists/* && rm -rf /usr/share/doc/* && \
