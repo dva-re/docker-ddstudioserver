@@ -2,12 +2,12 @@ FROM debian:stretch-slim
 MAINTAINER fastsol
 
 ADD files/* /root/
-EXPOSE 80 22 3306
+EXPOSE 80 22
 RUN \
  apt-get update && apt-get install -y --allow-unauthenticated --no-install-recommends wget ca-certificates apt-transport-https gnupg && \
  wget -q https://packages.sury.org/php/apt.gpg -O- | apt-key add - && \
  echo "deb https://packages.sury.org/php/ stretch main" | tee /etc/apt/sources.list.d/php.list && \ 
- apt-get update && apt-get install -y --allow-unauthenticated --no-install-recommends locales openssl openssh-server php php-curl php-apcu php-mbstring php-imagick php-bcmath php-xdebug pbzip2 ghostscript \
+ apt-get update && apt-get install -y --allow-unauthenticated --no-install-recommends locales openssl openssh-server php php-curl php-apcu php-mbstring php-imagick php-bcmath pbzip2 ghostscript \
  apache2 php-xml php-gd libzip4 php-zip lsb-release gnupg git nano sphinxsearch cron && \
  a2enmod rewrite && cat /root/vhost_config > /etc/apache2/sites-available/000-default.conf && rm -f /root/vhost_config &&\
  cd /tmp && wget --no-check-certificate https://dev.mysql.com/get/mysql-apt-config_0.8.8-1_all.deb && export DEBIAN_FRONTEND=noninteractive && \
@@ -20,7 +20,6 @@ RUN \
  echo '0 * * * * /usr/bin/indexer --rotate --all' | crontab - && \
  echo -e 'LANG="ru_RU.UTF-8"\nLANGUAGE="ru_RU.UTF-8"\n' > /etc/default/locale && sed -i -e 's/# ru_RU.UTF-8 UTF-8/ru_RU.UTF-8 UTF-8/' /etc/locale.gen && \
  dpkg-reconfigure --frontend=noninteractive locales && ln -snf /usr/share/zoneinfo/Europe/Moscow /etc/localtime && echo "Europe/Moscow" > /etc/timezone && \
- sed -i 's|^bind-address.*|bind-address = 0.0.0.0|' /etc/mysql/mysql.conf.d/mysqld.cnf && \
  chmod +x /root/start.sh
 
 VOLUME ["/data", "/var/www/html", "/etc/sphinxsearch"]
