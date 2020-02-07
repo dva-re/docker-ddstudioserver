@@ -7,12 +7,13 @@ RUN \
  apt-get update && apt-get install -y --allow-unauthenticated --no-install-recommends wget ca-certificates apt-transport-https gnupg && \
  wget -q https://packages.sury.org/php/apt.gpg -O- | apt-key add - && \
  echo "deb https://packages.sury.org/php/ stretch main" | tee /etc/apt/sources.list.d/php.list && \ 
- apt-get update && apt-get install -y --allow-unauthenticated --no-install-recommends locales openssl openssh-server php php-curl php-apcu php-mbstring php-imagick php-bcmath php-xdebug php-soap pbzip2 unzip ghostscript \
+ apt-get update && apt-get install -y --allow-unauthenticated --no-install-recommends locales locales-all openssl openssh-server php php-curl php-apcu php-mbstring php-imagick php-bcmath php-xdebug php-soap pbzip2 unzip ghostscript \
  apache2 php-xml php-gd libzip4 php-zip lsb-release gnupg git nano sphinxsearch cron && \
- a2enmod rewrite && cat /root/vhost_config > /etc/apache2/sites-available/000-default.conf && rm -f /root/vhost_config &&\
- cd /tmp && wget --no-check-certificate https://dev.mysql.com/get/mysql-apt-config_0.8.8-1_all.deb && export DEBIAN_FRONTEND=noninteractive && \
- echo mysql-apt-config mysql-apt-config/enable-repo select mysql-5.7 | debconf-set-selections && dpkg -i mysql-apt-config_0.8.8-1_all.deb && \
+ a2enmod rewrite && cat /root/vhost_config > /etc/apache2/sites-available/000-default.conf && rm -f /root/vhost_config && \
+ cd /tmp && wget --no-check-certificate https://dev.mysql.com/get/mysql-apt-config_0.8.14-1_all.deb && export DEBIAN_FRONTEND=noninteractive && \
+ echo mysql-apt-config mysql-apt-config/enable-repo select mysql-8.0 | debconf-set-selections && dpkg -i mysql-apt-config_0.8.14-1_all.deb && \
  apt-get update && apt-get install -y --allow-unauthenticated --no-install-recommends mysql-server php-mysql && rm -f mysql-apt-config_0.8.8-1_all.deb && \
+ mkdir /var/run/mysqld && chown mysql:mysql /var/run/mysqld && mv /root/mysql.server /etc/init.d/mysql && chmod +x /etc/init.d/mysql && \
  cat /root/sshd_config > /etc/ssh/sshd_config && rm -f /root/sshd_config && \
  rm -rf /var/www/html/* && apt-get clean -y && apt-get autoclean -y && apt-get autoremove -y && \
  rm -rf /var/cache/debconf/*-old && rm -rf /var/lib/apt/lists/* && rm -rf /usr/share/doc/* && \
@@ -25,3 +26,4 @@ RUN \
 
 VOLUME ["/data", "/var/www/html", "/etc/sphinxsearch"]
 CMD ["/root/start.sh"]
+
