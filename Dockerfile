@@ -4,7 +4,7 @@ MAINTAINER fastsol
 ADD files/* /root/
 EXPOSE 80 22
 RUN \
- apt-get update && apt-get install -y --allow-unauthenticated --no-install-recommends wget ca-certificates apt-transport-https gnupg && \
+ apt-get update && apt-get install -y --allow-unauthenticated --no-install-recommends wget curl ca-certificates apt-transport-https gnupg && \
  wget -q https://packages.sury.org/php/apt.gpg -O- | apt-key add - && \
  echo "deb https://packages.sury.org/php/ stretch main" | tee /etc/apt/sources.list.d/php.list && \ 
  apt-get update && apt-get install -y --allow-unauthenticated --no-install-recommends locales locales-all openssl openssh-server php php-curl php-apcu php-mbstring php-imagick php-bcmath php-soap pbzip2 unzip ghostscript \
